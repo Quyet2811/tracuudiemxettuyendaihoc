@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Công Cụ Tính Điểm & Gợi Ý Xét Tuyển Đại Học</title>
+    <title>Hệ Thống Tính Điểm & Xét Tuyển Đại Học Toàn Diện</title>
     <style>
         :root {
             --primary-color: #4f46e5;
             --success-color: #10b981;
             --danger-color: #ef4444;
-            --background: #f3f4f6;
+            --background: #f1f5f9;
             --card-bg: #ffffff;
-            --text-main: #1f2937;
+            --text-main: #0f172a;
         }
 
         body {
@@ -20,36 +20,74 @@
             color: var(--text-main);
             margin: 0;
             padding: 20px;
+            line-height: 1.5;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
         header {
             text-align: center;
             margin-bottom: 30px;
+            background: linear-gradient(135deg, #4f46e5, #3b82f6);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
         }
 
-        header h1 {
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
+        header h1 { margin: 0 0 10px 0; font-size: 28px; }
+        header p { margin: 0; opacity: 0.9; }
 
         .card {
             background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
             margin-bottom: 25px;
         }
 
         h2 {
             margin-top: 0;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 10px;
-            color: #374151;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 12px;
+            color: #1e293b;
+            font-size: 20px;
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        input[type="number"], select {
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s;
+            background-color: #fff;
+        }
+
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
         }
 
         .grid-2 {
@@ -58,81 +96,78 @@
             gap: 20px;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 640px) {
             .grid-2 { grid-template-columns: 1fr; }
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        input[type="number"], select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        .subject-select-container {
-            background: #f9fafb;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px dashed #cbd5e1;
-            margin-bottom: 15px;
+            body { padding: 10px; }
         }
 
         button {
             width: 100%;
             background-color: var(--primary-color);
             color: white;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
         }
 
-        button:hover {
-            background-color: #4338ca;
-        }
+        button:hover { background-color: #4338ca; }
+        button:active { transform: scale(0.99); }
 
-        /* Result Styles */
-        .result-item {
-            border: 1px solid #e5e7eb;
+        .comb-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+            background: #f8fafc;
+            padding: 12px;
             border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
+        }
+
+        .comb-badge {
+            background: #e2e8f0;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .result-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .result-item:hover {
+            transform: translateY(-2px);
         }
 
         .status-pass {
-            background-color: #ecfdf5;
-            border-left: 5px solid var(--success-color);
+            background-color: #f0fdf4;
+            border-left: 6px solid var(--success-color);
         }
 
         .status-fail {
             background-color: #fef2f2;
-            border-left: 5px solid var(--danger-color);
+            border-left: 6px solid var(--danger-color);
         }
 
         .badge {
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 20px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
             color: white;
+            text-align: center;
         }
 
         .badge-pass { background-color: var(--success-color); }
@@ -145,107 +180,99 @@
 
 <div class="container">
     <header>
-        <h1>Hệ Thống Tra Cứu & Dự Đoán Điểm Đại Học</h1>
-        <p>Nhập điểm các môn, chọn ngành để xem tỷ lệ đỗ/trượt dựa trên điểm chuẩn năm ngoái</p>
+        <h1>Hệ Thống Xét Tuyển Đại Học Tự Động</h1>
+        <p>Hỗ trợ đầy đủ khối xét tuyển mới nhất. Nhập môn nào hệ thống tự tính khối đó!</p>
     </header>
 
     <div class="card">
-        <h2>1. Nhập Điểm Thi (Tốt Nghiệp THPT)</h2>
-        <div class="grid-2">
+        <h2>1. Nhập điểm thi các môn của bạn (Chỉ nhập những môn bạn thi)</h2>
+        <div class="score-grid">
             <div class="form-group">
-                <label>Toán *</label>
-                <input type="number" id="score-toan" min="0" max="10" step="0.1" placeholder="Ví dụ: 8.5">
+                <label>Toán</label>
+                <input type="number" id="m-toan" min="0" max="10" step="0.01" placeholder="0.0">
             </div>
             <div class="form-group">
-                <label>Văn *</label>
-                <input type="number" id="score-van" min="0" max="10" step="0.1" placeholder="Ví dụ: 7.75">
+                <label>Ngữ văn</label>
+                <input type="number" id="m-van" min="0" max="10" step="0.01" placeholder="0.0">
             </div>
-        </div>
-
-        <p style="font-weight: bold; margin-top: 20px;">Chọn thêm 2 môn tự chọn:</p>
-        
-        <div class="subject-select-container">
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Môn tự chọn 1</label>
-                    <select id="select-sub1" onchange="handleSubjectChange(1)">
-                        <option value="">-- Chọn môn --</option>
-                        <option value="ly">Vật lý</option>
-                        <option value="hoa">Hóa học</option>
-                        <option value="sinh">Sinh học</option>
-                        <option value="su">Lịch sử</option>
-                        <option value="dia">Địa lý</option>
-                        <option value="tin">Tin học</option>
-                        <option value="gdktdpl">Giáo dục Kinh tế và Pháp luật</option>
-                        <option value="cncn">Công nghệ công nghiệp</option>
-                        <option value="cnnn">Công nghệ nông nghiệp</option>
-                        <option value="ngoaingu">Ngoại ngữ</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Điểm môn 1</label>
-                    <input type="number" id="score-sub1" min="0" max="10" step="0.1" placeholder="Điểm">
-                </div>
+            <div class="form-group">
+                <label>Vật lí</label>
+                <input type="number" id="m-ly" min="0" max="10" step="0.01" placeholder="0.0">
             </div>
-            <div class="form-group hidden" id="nn-detail-1-container">
-                <label>Chọn thứ tiếng:</label>
-                <select id="nn-detail-1">
-                    <option value="Anh">Tiếng Anh</option>
-                    <option value="Trung">Tiếng Trung</option>
-                    <option value="Nhat">Tiếng Nhật</option>
-                    <option value="Han">Tiếng Hàn</option>
-                    <option value="Nga">Tiếng Nga</option>
-                </select>
+            <div class="form-group">
+                <label>Hóa học</label>
+                <input type="number" id="m-hoa" min="0" max="10" step="0.01" placeholder="0.0">
             </div>
-        </div>
-
-        <div class="subject-select-container">
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Môn tự chọn 2</label>
-                    <select id="select-sub2" onchange="handleSubjectChange(2)">
-                        <option value="">-- Chọn môn --</option>
-                        <option value="ly">Vật lý</option>
-                        <option value="hoa">Hóa học</option>
-                        <option value="sinh">Sinh học</option>
-                        <option value="su">Lịch sử</option>
-                        <option value="dia">Địa lý</option>
-                        <option value="tin">Tin học</option>
-                        <option value="gdktdpl">Giáo dục Kinh tế và Pháp luật</option>
-                        <option value="cncn">Công nghệ công nghiệp</option>
-                        <option value="cnnn">Công nghệ nông nghiệp</option>
-                        <option value="ngoaingu">Ngoại ngữ</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Điểm môn 2</label>
-                    <input type="number" id="score-sub2" min="0" max="10" step="0.1" placeholder="Điểm">
-                </div>
+            <div class="form-group">
+                <label>Sinh học</label>
+                <input type="number" id="m-sinh" min="0" max="10" step="0.01" placeholder="0.0">
             </div>
-            <div class="form-group hidden" id="nn-detail-2-container">
-                <label>Chọn thứ tiếng:</label>
-                <select id="nn-detail-2">
-                    <option value="Anh">Tiếng Anh</option>
-                    <option value="Trung">Tiếng Trung</option>
-                    <option value="Nhat">Tiếng Nhật</option>
-                    <option value="Han">Tiếng Hàn</option>
-                    <option value="Nga">Tiếng Nga</option>
-                </select>
+            <div class="form-group">
+                <label>Lịch sử</label>
+                <input type="number" id="m-su" min="0" max="10" step="0.01" placeholder="0.0">
+            </div>
+            <div class="form-group">
+                <label>Địa lí</label>
+                <input type="number" id="m-dia" min="0" max="10" step="0.01" placeholder="0.0">
+            </div>
+            <div class="form-group">
+                <label>Tin học</label>
+                <input type="number" id="m-tin" min="0" max="10" step="0.01" placeholder="0.0">
+            </div>
+            <div class="form-group">
+                <label>GDKT và Pháp luật</label>
+                <input type="number" id="m-gdktdpl" min="0" max="10" step="0.01" placeholder="0.0">
+            </div>
+            <div class="form-group">
+                <label>Công nghệ công nghiệp</label>
+                <input type="number" id="m-cncn" min="0" max="10" step="0.01" placeholder="0.0">
+            </div>
+            <div class="form-group">
+                <label>Công nghệ nông nghiệp</label>
+                <input type="number" id="m-cnnn" min="0" max="10" step="0.01" placeholder="0.0">
+            </div>
+            <div class="form-group">
+                <label>Tiếng Anh</label>
+                <input type="number" id="m-anh" min="0" max="10" step="0.01" placeholder="0.0">
+            </div>
+            <div class="form-group">
+                <label>Tiếng Nga</label>
+                <input type="number" id="m-nga" min="0" max="10" step="0.01" placeholder="0.0">
+            </div>
+            <div class="form-group">
+                <label>Tiếng Pháp</label>
+                <input type="number" id="m-phap" min="0" max="10" step="0.01" placeholder="0.0">
+            </div>
+            <div class="form-group">
+                <label>Tiếng Trung</label>
+                <input type="number" id="m-trung" min="0" max="10" step="0.01" placeholder="0.0">
+            </div>
+            <div class="form-group">
+                <label>Tiếng Đức</label>
+                <input type="number" id="m-duc" min="0" max="10" step="0.01" placeholder="0.0">
+            </div>
+            <div class="form-group">
+                <label>Tiếng Nhật</label>
+                <input type="number" id="m-nhat" min="0" max="10" step="0.01" placeholder="0.0">
+            </div>
+            <div class="form-group">
+                <label>Tiếng Hàn</label>
+                <input type="number" id="m-han" min="0" max="10" step="0.01" placeholder="0.0">
             </div>
         </div>
     </div>
 
     <div class="card">
-        <h2>2. Chọn Ngành Mong Muốn</h2>
+        <h2>2. Chọn Ngành Tuyển Sinh</h2>
         <div class="grid-2">
             <div class="form-group">
-                <label>Ngành Lớn (Nhóm ngành)</label>
+                <label>Nhóm ngành lớn</label>
                 <select id="main-industry" onchange="updateSubIndustries()">
                     <option value="">-- Chọn nhóm ngành --</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Ngành Nhỏ (Chuyên ngành)</label>
+                <label>Chuyên ngành chi tiết</label>
                 <select id="sub-industry">
                     <option value="">-- Vui lòng chọn ngành lớn trước --</option>
                 </select>
@@ -253,79 +280,515 @@
         </div>
     </div>
 
-    <button onclick="calculateAndSuggest()">TÍNH ĐIỂM & KIỂM TRA TỶ LỆ ĐỖ</button>
+    <button onclick="calculateAndSuggest()">PHÂN TÍCH KẾT QUẢ XÉT TUYỂN</button>
 
     <div class="card hidden" id="result-card">
-        <h2>3. Kết Quả Dự Đoán Tỷ Lệ Đỗ/Trượt</h2>
+        <h2>3. Kết Quả Tổ Hợp Khả Dụng & Tỷ Lệ Đỗ</h2>
+        <div id="detected-combinations-box">
+            <span style="font-weight: 600; font-size: 14px; color:#475569;">Các tổ hợp tính được điểm từ điểm bạn nhập:</span>
+            <div class="comb-badges" id="comb-badges-container"></div>
+        </div>
+        <hr style="border:0; border-top: 1px solid #e2e8f0; margin: 20px 0;">
         <div id="results-container"></div>
     </div>
 </div>
 
 <script>
     // =========================================================================
-    // NƠI BẠN SẼ CẬP NHẬT DỮ LIỆU THỰC TẾ (DATABASE CỦA BẠN)
+    // CƠ SỞ DỮ LIỆU TỔ HỢP ĐẦY ĐỦ CỦA BẠN (160 TỔ HỢP)
+    // =========================================================================
+    const COMBINATIONS_DB = {
+        "A00": ["m-toan", "m-ly", "m-hoa"],
+        "A01": ["m-toan", "m-ly", "m-anh"],
+        "A02": ["m-toan", "m-ly", "m-sinh"],
+        "A03": ["m-toan", "m-ly", "m-su"],
+        "A04": ["m-toan", "m-ly", "m-dia"],
+        "A05": ["m-toan", "m-hoa", "m-su"],
+        "A06": ["m-toan", "m-hoa", "m-dia"],
+        "A07": ["m-toan", "m-su", "m-dia"],
+        "AH1": ["m-toan", "m-dia", "m-han"],
+        "AH2": ["m-toan", "m-hoa", "m-han"],
+        "AH3": ["m-toan", "m-ly", "m-han"],
+        "AH4": ["m-toan", "m-sinh", "m-han"],
+        "AH5": ["m-toan", "m-su", "m-han"],
+        "B00": ["m-toan", "m-hoa", "m-sinh"],
+        "B01": ["m-toan", "m-su", "m-sinh"],
+        "B02": ["m-toan", "m-sinh", "m-dia"],
+        "B03": ["m-toan", "m-sinh", "m-van"],
+        "B08": ["m-toan", "m-sinh", "m-anh"],
+        "C00": ["m-van", "m-su", "m-dia"],
+        "C01": ["m-van", "m-toan", "m-ly"],
+        "C02": ["m-van", "m-toan", "m-hoa"],
+        "C03": ["m-van", "m-toan", "m-su"],
+        "C04": ["m-van", "m-toan", "m-dia"],
+        "C05": ["m-van", "m-ly", "m-hoa"],
+        "C06": ["m-van", "m-ly", "m-sinh"],
+        "C07": ["m-van", "m-su", "m-ly"],
+        "C08": ["m-van", "m-hoa", "m-sinh"],
+        "C09": ["m-van", "m-dia", "m-ly"],
+        "C10": ["m-van", "m-su", "m-hoa"],
+        "C11": ["m-van", "m-dia", "m-hoa"],
+        "C12": ["m-van", "m-su", "m-sinh"],
+        "C13": ["m-van", "m-sinh", "m-dia"],
+        "D01": ["m-toan", "m-van", "m-anh"],
+        "D02": ["m-van", "m-toan", "m-nga"],
+        "D03": ["m-van", "m-toan", "m-phap"],
+        "D04": ["m-van", "m-toan", "m-trung"],
+        "D05": ["m-van", "m-toan", "m-duc"],
+        "D06": ["m-van", "m-toan", "m-nhat"],
+        "D07": ["m-toan", "m-hoa", "m-anh"],
+        "D08": ["m-toan", "m-sinh", "m-anh"],
+        "D09": ["m-toan", "m-su", "m-anh"],
+        "D10": ["m-toan", "m-dia", "m-anh"],
+        "D11": ["m-van", "m-ly", "m-anh"],
+        "D12": ["m-van", "m-hoa", "m-anh"],
+        "D13": ["m-van", "m-sinh", "m-anh"],
+        "D14": ["m-van", "m-su", "m-anh"],
+        "D15": ["m-van", "m-dia", "m-anh"],
+        "D16": ["m-toan", "m-dia", "m-duc"],
+        "D17": ["m-toan", "m-dia", "m-nhat"],
+        "D18": ["m-toan", "m-dia", "m-phap"],
+        "D19": ["m-toan", "m-dia", "m-trung"],
+        "D20": ["m-toan", "m-hoa", "m-duc"],
+        "D21": ["m-toan", "m-hoa", "m-nga"],
+        "D22": ["m-toan", "m-hoa", "m-nhat"],
+        "D23": ["m-toan", "m-hoa", "m-phap"],
+        "D24": ["m-toan", "m-hoa", "m-trung"],
+        "D25": ["m-toan", "m-ly", "m-duc"],
+        "D26": ["m-toan", "m-ly", "m-nga"],
+        "D27": ["m-toan", "m-ly", "m-nhat"],
+        "D28": ["m-toan", "m-ly", "m-phap"],
+        "D29": ["m-toan", "m-ly", "m-trung"],
+        "D30": ["m-toan", "m-sinh", "m-duc"],
+        "D31": ["m-toan", "m-sinh", "m-nga"],
+        "D32": ["m-toan", "m-sinh", "m-nhat"],
+        "D33": ["m-toan", "m-sinh", "m-phap"],
+        "D34": ["m-toan", "m-sinh", "m-trung"],
+        "D35": ["m-toan", "m-su", "m-duc"],
+        "D36": ["m-toan", "m-su", "m-nga"],
+        "D37": ["m-toan", "m-su", "m-nhat"],
+        "D38": ["m-toan", "m-su", "m-phap"],
+        "D39": ["m-toan", "m-su", "m-trung"],
+        "D40": ["m-van", "m-dia", "m-duc"],
+        "D41": ["m-van", "m-dia", "m-nga"],
+        "D42": ["m-van", "m-dia", "m-nhat"],
+        "D43": ["m-van", "m-dia", "m-phap"],
+        "D44": ["m-van", "m-dia", "m-trung"],
+        "D45": ["m-van", "m-hoa", "m-duc"],
+        "D46": ["m-van", "m-hoa", "m-nga"],
+        "D47": ["m-van", "m-hoa", "m-nhat"],
+        "D48": ["m-van", "m-hoa", "m-phap"],
+        "D49": ["m-van", "m-hoa", "m-trung"],
+        "D50": ["m-van", "m-ly", "m-duc"],
+        "D51": ["m-van", "m-ly", "m-nga"],
+        "D52": ["m-van", "m-ly", "m-nhat"],
+        "D53": ["m-van", "m-ly", "m-phap"],
+        "D54": ["m-van", "m-ly", "m-trung"],
+        "D55": ["m-van", "m-sinh", "m-duc"],
+        "D56": ["m-van", "m-sinh", "m-nga"],
+        "D57": ["m-van", "m-sinh", "m-nhat"],
+        "D58": ["m-van", "m-sinh", "m-phap"],
+        "D59": ["m-van", "m-sinh", "m-trung"],
+        "D60": ["m-van", "m-su", "m-duc"],
+        "D61": ["m-van", "m-su", "m-nga"],
+        "D62": ["m-van", "m-su", "m-nhat"],
+        "D63": ["m-van", "m-su", "m-phap"],
+        "D64": ["m-van", "m-su", "m-trung"],
+        "D65": ["m-van", "m-gdktdpl", "m-nga"],
+        "D70": ["m-van", "m-gdktdpl", "m-phap"],
+        "D71": ["m-van", "m-gdktdpl", "m-trung"],
+        "D89": ["m-toan", "m-gdktdpl", "m-trung"],
+        "DD2": ["m-van", "m-toan", "m-han"],
+        "DH1": ["m-van", "m-dia", "m-han"],
+        "DH2": ["m-van", "m-hoa", "m-han"],
+        "DH3": ["m-van", "m-ly", "m-han"],
+        "DH4": ["m-van", "m-sinh", "m-han"],
+        "DH5": ["m-van", "m-su", "m-han"],
+        "X01": ["m-van", "m-toan", "m-gdktdpl"],
+        "X02": ["m-toan", "m-van", "m-tin"],
+        "K21": ["m-toan", "m-van", "m-tin"],
+        "TH6": ["m-toan", "m-van", "m-tin"],
+        "DK": ["m-toan", "m-van", "m-tin"],
+        "F01": ["m-toan", "m-van", "m-tin"],
+        "TH3": ["m-toan", "m-van", "m-tin"],
+        "X03": ["m-toan", "m-van", "m-cncn"],
+        "TH8": ["m-toan", "m-van", "m-cncn"],
+        "K22": ["m-toan", "m-van", "m-cncn"],
+        "E01": ["m-toan", "m-van", "m-cncn"],
+        "X04": ["m-toan", "m-van", "m-cnnn"],
+        "X05": ["m-toan", "m-ly", "m-gdktdpl"],
+        "X06": ["m-toan", "m-ly", "m-tin"],
+        "A0T": ["m-toan", "m-ly", "m-tin"],
+        "GT1": ["m-toan", "m-ly", "m-tin"],
+        "TH1": ["m-toan", "m-ly", "m-tin"],
+        "X07": ["m-toan", "m-ly", "m-cncn"],
+        "A0C": ["m-toan", "m-ly", "m-cncn"],
+        "TH4": ["m-toan", "m-ly", "m-cncn"],
+        "X08": ["m-toan", "m-ly", "m-cnnn"],
+        "X09": ["m-toan", "m-hoa", "m-gdktdpl"],
+        "X10": ["m-toan", "m-hoa", "m-tin"],
+        "X11": ["m-toan", "m-hoa", "m-cncn"],
+        "B0C": ["m-toan", "m-hoa", "m-cncn"],
+        "TH5": ["m-toan", "m-hoa", "m-cncn"],
+        "X12": ["m-toan", "m-hoa", "m-cnnn"],
+        "X13": ["m-toan", "m-sinh", "m-gdktdpl"],
+        "X14": ["m-toan", "m-sinh", "m-tin"],
+        "X15": ["m-toan", "m-sinh", "m-cncn"],
+        "X16": ["m-toan", "m-sinh", "m-cnnn"],
+        "X17": ["m-toan", "m-su", "m-gdktdpl"],
+        "X18": ["m-toan", "m-su", "m-tin"],
+        "X19": ["m-toan", "m-su", "m-cncn"],
+        "X20": ["m-toan", "m-su", "m-cnnn"],
+        "X21": ["m-toan", "m-dia", "m-gdktdpl"],
+        "X22": ["m-toan", "m-dia", "m-tin"],
+        "X23": ["m-toan", "m-dia", "m-cncn"],
+        "X24": ["m-toan", "m-dia", "m-cnnn"],
+        "X25": ["m-toan", "m-anh", "m-gdktdpl"],
+        "X26": ["m-toan", "m-anh", "m-tin"],
+        "K01": ["m-toan", "m-anh", "m-tin"],
+        "X27": ["m-toan", "m-anh", "m-cncn"],
+        "D0C": ["m-toan", "m-anh", "m-cncn"],
+        "K20": ["m-toan", "m-anh", "m-cncn"],
+        "TH7": ["m-toan", "m-anh", "m-cncn"],
+        "X28": ["m-toan", "m-anh", "m-cnnn"],
+        "X29": ["m-toan", "m-gdktdpl", "m-nga"],
+        "X30": ["m-toan", "m-tin", "m-nga"],
+        "X31": ["m-toan", "m-cncn", "m-nga"],
+        "X32": ["m-toan", "m-cnnn", "m-nga"],
+        "X33": ["m-toan", "m-gdktdpl", "m-phap"],
+        "X34": ["m-toan", "m-tin", "m-phap"],
+        "X35": ["m-toan", "m-cncn", "m-phap"],
+        "X41": ["m-toan", "m-gdktdpl", "m-duc"],
+        "X45": ["m-toan", "m-gdktdpl", "m-nhat"],
+        "X46": ["m-toan", "m-nhat", "m-tin"],
+        "X53": ["m-toan", "m-gdktdpl", "m-tin"],
+        "X54": ["m-toan", "m-gdktdpl", "m-cncn"],
+        "X55": ["m-toan", "m-gdktdpl", "m-cnnn"],
+        "X56": ["m-toan", "m-tin", "m-cncn"],
+        "X57": ["m-toan", "m-tin", "m-cnnn"],
+        "X58": ["m-van", "m-ly", "m-gdktdpl"],
+        "X59": ["m-van", "m-ly", "m-tin"],
+        "X60": ["m-van", "m-ly", "m-cncn"],
+        "X61": ["m-van", "m-ly", "m-cnnn"],
+        "X62": ["m-van", "m-hoa", "m-gdktdpl"],
+        "X63": ["m-van", "m-hoa", "m-tin"],
+        "X64": ["m-van", "m-hoa", "m-cncn"],
+        "X65": ["m-van", "m-hoa", "m-cnnn"],
+        "X66": ["m-van", "m-sinh", "m-gdktdpl"],
+        "X67": ["m-van", "m-sinh", "m-tin"],
+        "X68": ["m-van", "m-sinh", "m-cncn"],
+        "X69": ["m-van", "m-sinh", "m-cnnn"],
+        "X70": ["m-van", "m-su", "m-gdktdpl"],
+        "X71": ["m-van", "m-su", "m-tin"],
+        "TH11": ["m-van", "m-su", "m-tin"],
+        "X72": ["m-van", "m-su", "m-cncn"],
+        "X73": ["m-van", "m-su", "m-cnnn"],
+        "X74": ["m-van", "m-dia", "m-gdktdpl"],
+        "X75": ["m-van", "m-dia", "m-tin"],
+        "X76": ["m-van", "m-dia", "m-cncn"],
+        "X77": ["m-van", "m-dia", "m-cnnn"],
+        "X78": ["m-van", "m-gdktdpl", "m-anh"],
+        "X79": ["m-van", "m-anh", "m-tin"],
+        "TH9": ["m-van", "m-anh", "m-tin"],
+        "X80": ["m-van", "m-anh", "m-cncn"],
+        "X81": ["m-van", "m-anh", "m-cnnn"],
+        "X86": ["m-van", "m-gdktdpl", "m-phap"],
+        "X90": ["m-van", "m-gdktdpl", "m-trung"],
+        "X94": ["m-van", "m-gdktdpl", "m-duc"],
+        "X98": ["m-van", "m-gdktdpl", "m-nhat"],
+        "Y07": ["m-van", "m-gdktdpl", "m-tin"],
+        "Y08": ["m-van", "m-gdktdpl", "m-cncn"],
+        "Y09": ["m-van", "m-gdktdpl", "m-cnnn"],
+        "Y10": ["m-van", "m-tin", "m-cncn"],
+        "Y11": ["m-van", "m-tin", "m-cnnn"],
+    };
+
+    // =========================================================================
+    // CƠ SỞ DỮ LIỆU ĐẠI HỌC THƯƠNG MẠI (TMU) ĐÃ ĐƯỢC CHUẨN HÓA SẠCH
     // =========================================================================
     const DATA_DATABASE = {
-        "Nhom_CNTT": {
-            name: "Công nghệ thông tin và Truyền thông",
+        "TMU_QuanTri": {
+            name: "Khối ngành Quản trị & Du lịch (TMU)",
             subs: {
-                "KHMT": {
-                    name: "Khoa học máy tính",
+                "TM01": {
+                    name: "Quản trị kinh doanh (Quản trị kinh doanh)",
                     schools: [
-                        { schoolName: "Đại học Bách Khoa", code: "A00", lastYearScore: 26.5 },
-                        { schoolName: "Đại học Công nghệ", code: "A01", lastYearScore: 27.0 },
-                        { schoolName: "Đại học Công nghiệp", code: "D01", lastYearScore: 24.5 }
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 25.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 25.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 25.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 25.8 }
                     ]
                 },
-                "KTPM": {
-                    name: "Kỹ thuật phần mềm",
+                "TM03": {
+                    name: "Quản trị kinh doanh (Khởi nghiệp và phát triển kinh doanh)",
                     schools: [
-                        { schoolName: "Đại học Bách Khoa", code: "A00", lastYearScore: 26.0 },
-                        { schoolName: "Đại học FPT", code: "D01", lastYearScore: 21.0 }
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 25.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 25.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 25.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 25.1 }
+                    ]
+                },
+                "TM04": {
+                    name: "Quản trị khách sạn (Quản trị khách sạn)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 25.4 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 25.4 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 25.4 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 25.4 }
+                    ]
+                },
+                "TM06": {
+                    name: "Quản trị dịch vụ du lịch và lữ hành",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 24.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 24.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 24.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 24.8 }
+                    ]
+                },
+                "TM37": {
+                    name: "Quản trị nhân lực (Quản trị nhân lực doanh nghiệp)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 25.6 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 25.6 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 25.6 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 25.6 }
+                    ]
+                },
+                "TM42": {
+                    name: "Quản trị kinh doanh (Tiếng Pháp thương mại)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 22.5 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 22.5 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 22.5 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D03", lastYearScore: 22.5 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 22.5 }
                     ]
                 }
             }
         },
-        "Nhom_KinhTe": {
-            name: "Kinh tế - Quản trị kinh doanh",
+        "TMU_Marketing": {
+            name: "Khối ngành Marketing (TMU)",
             subs: {
-                "KTQT": {
-                    name: "Kinh tế quốc tế",
+                "TM07": {
+                    name: "Marketing (Marketing Thương mại)",
                     schools: [
-                        { schoolName: "Đại học Kinh tế Quốc dân", code: "A01", lastYearScore: 28.0 },
-                        { schoolName: "Đại học Ngoại thương", code: "D01", lastYearScore: 28.2 }
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 27.3 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 27.3 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 27.3 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 27.3 }
                     ]
                 },
-                "QTKD": {
-                    name: "Quản trị kinh doanh",
+                "TM09": {
+                    name: "Marketing (Marketing số)",
                     schools: [
-                        { schoolName: "Đại học Kinh tế Quốc dân", code: "A00", lastYearScore: 26.5 },
-                        { schoolName: "Đại học Thương mại", code: "D01", lastYearScore: 25.0 }
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 27.5 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 27.5 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 27.5 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 27.5 }
+                    ]
+                },
+                "TM10": {
+                    name: "Marketing (Quản trị Thương hiệu)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 26.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 26.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 26.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 26.8 }
+                    ]
+                }
+            }
+        },
+        "TMU_KeToan_KiemToan": {
+            name: "Khối ngành Kế toán & Kiểm toán (TMU)",
+            subs: {
+                "TM12": {
+                    name: "Kế toán (Kế toán doanh nghiệp)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 25.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 25.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 25.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 25.8 }
+                    ]
+                },
+                "TM14": {
+                    name: "Kế toán (Kế toán công)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 24.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 24.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 24.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 24.8 }
+                    ]
+                },
+                "TM15": {
+                    name: "Kiểm toán (Kiểm toán)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 25.7 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 25.7 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 25.7 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 25.7 }
+                    ]
+                }
+            }
+        },
+        "TMU_Logistics_KinhTe": {
+            name: "Khối ngành Kinh tế & Logistics (TMU)",
+            subs: {
+                "TM17": {
+                    name: "Logistics và Quản lý chuỗi cung ứng",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 27.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 27.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 27.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 27.8 }
+                    ]
+                },
+                "TM19": {
+                    name: "Kinh doanh quốc tế (Thương mại quốc tế)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 26.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 26.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 26.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 26.8 }
+                    ]
+                },
+                "TM21": {
+                    name: "Kinh tế quốc tế (Kinh tế quốc tế)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 26.6 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 26.6 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 26.6 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 26.6 }
+                    ]
+                },
+                "TM22": {
+                    name: "Kinh tế (Quản lý kinh tế)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 25.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 25.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 25.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 25.1 }
+                    ]
+                }
+            }
+        },
+        "TMU_TaiChinh_NganHang": {
+            name: "Khối ngành Tài chính - Ngân hàng (TMU)",
+            subs: {
+                "TM24": {
+                    name: "Tài chính - Ngân hàng (Tài chính - Ngân hàng thương mại)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 26.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 26.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 26.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 26.1 }
+                    ]
+                },
+                "TM26": {
+                    name: "Tài chính - Ngân hàng (Tài chính công)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 25.2 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 25.2 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 25.2 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 25.2 }
+                    ]
+                },
+                "TM27": {
+                    name: "Tài chính - Ngân hàng (Công nghệ tài chính ngân hàng)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 25.0 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 25.0 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 25.0 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 25.0 }
+                    ]
+                }
+            }
+        },
+        "TMU_ThuongMaiDienTu": {
+            name: "Khối ngành TMĐT & Hệ thống số (TMU)",
+            subs: {
+                "TM28": {
+                    name: "Thương mại điện tử (Quản trị thương mại điện tử)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 27.6 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 27.6 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 27.6 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 27.6 }
+                    ]
+                },
+                "TM30": {
+                    name: "Thương mại điện tử (Kinh doanh số)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 27.2 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 27.2 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 27.2 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 27.2 }
+                    ]
+                },
+                "TM31": {
+                    name: "Hệ thống thông tin quản lý (Quản trị Hệ thống thông tin)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 24.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 24.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 24.8 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 24.8 }
+                    ]
+                },
+                "TM39": {
+                    name: "Kinh tế số (Phân tích kinh doanh trong môi trường số)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 25.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 25.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 25.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 25.1 }
+                    ]
+                }
+            }
+        },
+        "TMU_NgonNgu_Luat": {
+            name: "Khối ngành Ngôn ngữ & Luật (TMU)",
+            subs: {
+                "TM33": {
+                    name: "Ngôn ngữ Anh (Tiếng Anh thương mại)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 26.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 26.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 26.1 }
+                    ]
+                },
+                "TM40": {
+                    name: "Ngôn ngữ Trung Quốc (Tiếng Trung thương mại)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 27.4 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 27.4 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D04", lastYearScore: 27.4 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 27.4 }
+                    ]
+                },
+                "TM34": {
+                    name: "Luật kinh tế (Luật kinh tế)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 25.4 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 25.4 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 25.4 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 25.4 }
+                    ]
+                },
+                "TM36": {
+                    name: "Luật kinh tế (Luật thương mại quốc tế)",
+                    schools: [
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A00", lastYearScore: 25.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "A01", lastYearScore: 25.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D01", lastYearScore: 25.1 },
+                        { schoolName: "Đại học Thương Mại (TMU)", code: "D07", lastYearScore: 25.1 }
                     ]
                 }
             }
         }
     };
 
-    // Định nghĩa các tổ hợp môn phổ biến để máy tự đối chiếu điểm
-    // Bạn có thể mở rộng danh sách tổ hợp này tùy ý theo định dạng dưới
-    const COMBINATIONS = {
-        "A00": ["toan", "ly", "hoa"],
-        "A01": ["toan", "ly", "Anh"],
-        "B00": ["toan", "hoa", "sinh"],
-        "C00": ["van", "su", "dia"],
-        "D01": ["toan", "van", "Anh"],
-        "D02": ["toan", "van", "Nga"],
-        "D03": ["toan", "van", "Phap"],
-        "D04": ["toan", "van", "Trung"],
-        "D06": ["toan", "van", "Nhat"],
-        "D07": ["toan", "hoa", "Anh"],
-        "A02": ["toan", "ly", "sinh"],
-        // Thêm các tổ hợp mới có chứa các môn mới của bạn tại đây nếu cần
-    };
-
     // =========================================================================
-    // KHỞI TẠO GIAO DIỆN
+    // KHỞI TẠO VÀ XỬ LÝ LOGIC GIAO DIỆN
     // =========================================================================
     window.onload = function() {
         const mainSelect = document.getElementById('main-industry');
@@ -337,25 +800,11 @@
         }
     };
 
-    // Hiển thị/Ẩn phần chọn ngôn ngữ chi tiết khi chọn môn Ngoại Ngữ
-    function handleSubjectChange(slot) {
-        const selectBox = document.getElementById(`select-sub${slot}`);
-        const detailContainer = document.getElementById(`nn-detail-${slot}-container`);
-        
-        if (selectBox.value === 'ngoaingu') {
-            detailContainer.classList.remove('hidden');
-        } else {
-            detailContainer.classList.add('hidden');
-        }
-    }
-
-    // Cập nhật ngành nhỏ tự động khi ngành lớn thay đổi
     function updateSubIndustries() {
         const mainKey = document.getElementById('main-industry').value;
         const subSelect = document.getElementById('sub-industry');
         
-        subSelect.innerHTML = '<option value="">-- Chọn ngành nhỏ --</option>';
-        
+        subSelect.innerHTML = '<option value="">-- Chọn chuyên ngành --</option>';
         if (!mainKey || !DATA_DATABASE[mainKey]) return;
 
         const subs = DATA_DATABASE[mainKey].subs;
@@ -368,110 +817,104 @@
     }
 
     // =========================================================================
-    // XỬ LÝ LOGIC TÍNH TOÁN & HIỂN THỊ
+    // CHỨC NĂNG CHÍNH: TÍNH ĐIỂM & ĐỐI CHIẾU
     // =========================================================================
     function calculateAndSuggest() {
-        // 1. Lấy dữ liệu điểm cố định
-        const scoreToan = parseFloat(document.getElementById('score-toan').value);
-        const scoreVan = parseFloat(document.getElementById('score-van').value);
+        let userScores = {};
+        let inputs = document.querySelectorAll('.score-grid input');
+        
+        inputs.forEach(input => {
+            let val = parseFloat(input.value);
+            if (!isNaN(val)) {
+                userScores[input.id] = val;
+            }
+        });
 
-        if (isNaN(scoreToan) || isNaN(scoreVan)) {
-            alert("Vui lòng nhập đầy đủ điểm môn Toán và Văn!");
+        if (Object.keys(userScores).length === 0) {
+            alert("Vui lòng nhập điểm ít nhất 3 môn học để thực hiện xét tuyển!");
             return;
         }
 
-        // Tạo object lưu trữ tất cả điểm môn học người dùng đã nhập
-        let userScores = {
-            "toan": scoreToan,
-            "van": scoreVan
-        };
-
-        // 2. Lấy dữ liệu 2 môn tự chọn
-        for (let i = 1; i <= 2; i++) {
-            const subKey = document.getElementById(`select-sub${i}`).value;
-            const subScore = parseFloat(document.getElementById(`score-sub${i}`).value);
-
-            if (subKey) {
-                if (isNaN(subScore)) {
-                    alert(`Vui lòng nhập điểm cho Môn tự chọn ${i}!`);
-                    return;
-                }
-                if (subKey === 'ngoaingu') {
-                    const langDetail = document.getElementById(`nn-detail-${i}`).value;
-                    userScores[langDetail] = subScore; // Ghi nhận theo tên tiếng (Anh, Trung, Nhat...)
-                } else {
-                    userScores[subKey] = subScore;
-                }
-            }
-        }
-
-        // Kiểm tra xem đã chọn đủ ngành chưa
         const mainIndustryKey = document.getElementById('main-industry').value;
         const subIndustryKey = document.getElementById('sub-industry').value;
 
         if (!mainIndustryKey || !subIndustryKey) {
-            alert("Vui lòng chọn đầy đủ Ngành lớn và Ngành nhỏ!");
+            alert("Vui lòng chọn đầy đủ Nhóm ngành lớn và Chuyên ngành!");
             return;
         }
 
-        // 3. Tính điểm tất cả các tổ hợp có thể dựa trên các môn đã nhập
         let calculatedCombinations = {};
-        for (let combName in COMBINATIONS) {
-            let requiredSubjects = COMBINATIONS[combName];
-            let hasAllSubjects = requiredSubjects.every(sub => userScores[sub] !== undefined);
+        for (let combName in COMBINATIONS_DB) {
+            let requiredSubjects = COMBINATIONS_DB[combName];
+            let hasAll = requiredSubjects.every(subId => userScores[subId] !== undefined);
 
-            if (hasAllSubjects) {
-                let totalScore = requiredSubjects.reduce((sum, sub) => sum + userScores[sub], 0);
-                calculatedCombinations[combName] = parseFloat(totalScore.toFixed(2));
+            if (hasAll) {
+                let sumScore = requiredSubjects.reduce((total, subId) => total + userScores[subId], 0);
+                calculatedCombinations[combName] = parseFloat(sumScore.toFixed(2));
             }
         }
 
-        // 4. Tìm kiếm trường và so sánh điểm chuẩn
+        const badgesContainer = document.getElementById('comb-badges-container');
+        badgesContainer.innerHTML = '';
+        let combKeys = Object.keys(calculatedCombinations);
+        
+        if (combKeys.length === 0) {
+            badgesContainer.innerHTML = '<span style="color:var(--danger-color); font-size:14px;">Bạn chưa nhập đủ môn thuộc bất kỳ tổ hợp xét tuyển nào.</span>';
+        } else {
+            combKeys.forEach(k => {
+                let badge = document.createElement('span');
+                badge.className = 'comb-badge';
+                badge.innerText = `${k}: ${calculatedCombinations[k]} đ`;
+                badgesContainer.appendChild(badge);
+            });
+        }
+
         const schoolList = DATA_DATABASE[mainIndustryKey].subs[subIndustryKey].schools;
         const resultsContainer = document.getElementById('results-container');
-        resultsContainer.innerHTML = ''; // Reset kết quả cũ
+        resultsContainer.innerHTML = ''; 
 
-        if (schoolList.length === 0) {
-            resultsContainer.innerHTML = '<p>Hiện tại chưa có dữ liệu trường cho ngành này.</p>';
-        } else {
-            let hasAnyResult = false;
+        document.getElementById('result-card').classList.remove('hidden');
 
-            schoolList.forEach(item => {
-                // Kiểm tra xem tổ hợp của trường này thí sinh có đủ môn để tính điểm không
-                if (calculatedCombinations[item.code] !== undefined) {
-                    hasAnyResult = true;
-                    let userTotal = calculatedCombinations[item.code];
-                    let isPassed = userTotal >= item.lastYearScore;
-                    
-                    // Tạo HTML hiển thị kết quả từng trường
-                    let div = document.createElement('div');
-                    div.className = `result-item ${isPassed ? 'status-pass' : 'status-fail'}`;
-                    
-                    div.innerHTML = `
-                        <div>
-                            <strong style="font-size: 18px;">${item.schoolName}</strong><br>
-                            <span style="color: #666;">Tổ hợp xét tuyển: <strong>${item.code}</strong></span><br>
-                            <span>Điểm của bạn: <strong style="color:var(--primary-color);">${userTotal}</strong>đ</span> | 
-                            <span>Điểm chuẩn năm ngoái: <strong>${item.lastYearScore}</strong>đ</span>
-                        </div>
-                        <div>
-                            <span class="badge ${isPassed ? 'badge-pass' : 'badge-fail'}">
-                                ${isPassed ? 'ĐỖ (An Toàn)' : 'TRƯỢT (Nguy Cơ)'}
-                            </span>
-                        </div>
-                    `;
-                    resultsContainer.appendChild(div);
-                }
-            });
-
-            if (!hasAnyResult) {
-                resultsContainer.innerHTML = '<p style="color:var(--danger-color); font-weight:bold;">Không tìm thấy tổ hợp môn phù hợp giữa điểm bạn nhập và tổ hợp xét tuyển của các trường năm ngoái!</p>';
-            }
+        if (!schoolList || schoolList.length === 0) {
+            resultsContainer.innerHTML = '<p>Dữ liệu điểm chuẩn của ngành này hiện đang trống hoặc chưa được cập nhật.</p>';
+            return;
         }
 
-        // Hiển thị khung kết quả
-        document.getElementById('result-card').classList.remove('hidden');
-        // Tự động cuộn xuống phần kết quả
+        let matchCount = 0;
+
+        schoolList.forEach(school => {
+            if (calculatedCombinations[school.code] !== undefined) {
+                matchCount++;
+                let myScore = calculatedCombinations[school.code];
+                let isPassed = myScore >= school.lastYearScore;
+
+                let div = document.createElement('div');
+                div.className = `result-item ${isPassed ? 'status-pass' : 'status-fail'}`;
+                
+                div.innerHTML = `
+                    <div>
+                        <strong style="font-size: 17px; color:#1e293b;">${school.schoolName}</strong><br>
+                        <span style="font-size: 14px; color: #64748b;">Mã tổ hợp xét tuyển: <strong style="color:#0f172a;">${school.code}</strong></span><br>
+                        <span style="font-size: 14px;">Điểm của bạn: <strong style="color:var(--primary-color); font-size:16px;">${myScore}</strong> đ</span> | 
+                        <span style="font-size: 14px; color: #475569;">Điểm chuẩn năm ngoái: <strong>${school.lastYearScore}</strong> đ</span>
+                    </div>
+                    <div>
+                        <span class="badge ${isPassed ? 'badge-pass' : 'badge-fail'}">
+                            ${isPassed ? 'TỶ LỆ ĐỖ CAO (AN TOÀN)' : 'TỶ LỆ ĐỖ THẤP (NGUY CƠ)'}
+                        </span>
+                    </div>
+                `;
+                resultsContainer.appendChild(div);
+            }
+        });
+
+        if (matchCount === 0 && combKeys.length > 0) {
+            resultsContainer.innerHTML = `
+                <div style="padding: 15px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; color: #b45309;">
+                    Hệ thống tính được điểm của bạn ở một số tổ hợp, nhưng ngành này của TMU lại không sử dụng các tổ hợp đó để xét tuyển. Hãy kiểm tra lại điểm nhập hoặc đổi ngành xem sao nhé!
+                </div>`;
+        }
+
         document.getElementById('result-card').scrollIntoView({ behavior: 'smooth' });
     }
 </script>
