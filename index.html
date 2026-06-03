@@ -48,11 +48,16 @@
                     <div class="col-6"><label class="form-label small">Sinh Học</label><input type="number" step="0.01" id="m-sinh" class="form-control form-control-sm" placeholder="0.0"></div>
                     <div class="col-6"><label class="form-label small">Lịch Sử</label><input type="number" step="0.01" id="m-lich-su" class="form-control form-control-sm" placeholder="0.0"></div>
                     <div class="col-6"><label class="form-label small">Địa Lý</label><input type="number" step="0.01" id="m-dia" class="form-control form-control-sm" placeholder="0.0"></div>
-                    <div class="col-6"><label class="form-label small">GD KT & PL</label><input type="number" step="0.01" id="m-gdktdpl" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">GDKT&PL</label><input type="number" step="0.01" id="m-gdktdpl" class="form-control form-control-sm" placeholder="0.0"></div>
                     <div class="col-6"><label class="form-label small">Tin Học</label><input type="number" step="0.01" id="m-tin" class="form-control form-control-sm" placeholder="0.0"></div>
                     <div class="col-6"><label class="form-label small">Tiếng Anh</label><input type="number" step="0.01" id="m-anh" class="form-control form-control-sm" placeholder="0.0"></div>
                     <div class="col-6"><label class="form-label small">Tiếng Pháp</label><input type="number" step="0.01" id="m-phap" class="form-control form-control-sm" placeholder="0.0"></div>
                     <div class="col-6"><label class="form-label small">Tiếng Trung</label><input type="number" step="0.01" id="m-trung" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Tiếng Nhật</label><input type="number" step="0.01" id="m-nhat" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Tiếng Hàn</label><input type="number" step="0.01" id="m-han" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Tiếng Nga</label><input type="number" step="0.01" id="m-Nga" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Công Nghệ Nông Nghiệp</label><input type="number" step="0.01" id="m-cnnn" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Công Nghệ Công Nghiệp</label><input type="number" step="0.01" id="m-cncn" class="form-control form-control-sm" placeholder="0.0"></div>
                 </div>
 
                 <h6 class="text-success fw-bold border-bottom pb-1">Điểm ĐGNL & Điểm Cộng</h6>
@@ -74,10 +79,10 @@
                             <tr>
                                 <th style="width: 10%">Mã Ngành</th>
                                 <th style="width: 32%">Tên Ngành Học</th>
-                                <th style="width: 13%">Khối Tối Ưu</th>
+                                <th style="width: 12%">Tổ hợp xét tuyển</th>
                                 <th style="width: 18%">Điểm Xét / Chuẩn (THPT)</th>
                                 <th style="width: 12%">KQ THPT</th>
-                                <th style="width: 15%">Điểm Xét / Chuẩn (HSA)</th>
+                                <th style="width: 16%">Điểm Xét / Chuẩn (HSA)</th>
                                 <th style="width: 10%">KQ HSA</th>
                             </tr>
                         </thead>
@@ -173,7 +178,12 @@ function runCoreAnalysisEngine() {
         "m-tin": parseFloat(document.getElementById("m-tin").value) || 0,
         "m-anh": parseFloat(document.getElementById("m-anh").value) || 0,
         "m-phap": parseFloat(document.getElementById("m-phap").value) || 0,
-        "m-trung": parseFloat(document.getElementById("m-trung").value) || 0
+        "m-trung": parseFloat(document.getElementById("m-trung").value) || 0,
+        "m-nhat": parseFloat(document.getElementById("m-nhat").value) || 0,
+        "m-han": parseFloat(document.getElementById("m-han").value) || 0,
+        "m-nga": parseFloat(document.getElementById("m-nga").value) || 0,
+        "m-cnnn": parseFloat(document.getElementById("m-cnnn").value) || 0,
+        "m-cncn": parseFloat(document.getElementById("m-cncn").value) || 0
     };
 
     const bonusUt = parseFloat(document.getElementById("bonus-ut").value) || 0; 
@@ -214,12 +224,13 @@ function runCoreAnalysisEngine() {
                 return; 
             }
 
-            let totalThreeSubjects = userScores[subjects[0]] + userScores[subjects[1]] + userScores[subjects[2]];
-            
-            // Xử lý bài toán môn thi nhân hệ số đặc thù (Ví dụ: HUS nhân đôi điểm Toán)
-            if (ind.mathWeight === 2 && subjects.includes("m-toan")) {
-                totalThreeSubjects = (userScores["m-toan"] * 2) + userScores[subjects.filter(s => s !== "m-toan")[0]] + userScores[subjects.filter(s => s !== "m-toan")[1]];
-                totalThreeSubjects = (totalThreeSubjects * 3) / 4; // Quy đổi mượt chuẩn về thang điểm 30
+            let totalThreeSubjects = 0;
+            if (schoolData.thptConfig && typeof schoolData.thptConfig.calculate === "function") {
+                // 1. Nếu trường có công thức tính riêng -> Giao quyền cho trường tự tính
+                totalThreeSubjects = schoolData.thptConfig.calculate(subjects, userScores, ind);
+            } else {
+                // 2. Nếu không có gì đặc biệt -> Cứ cộng thô 3 môn bình thường
+                totalThreeSubjects = userScores[subjects[0]] + userScores[subjects[1]] + userScores[subjects[2]];
             }
 
             let finalThpt = totalThreeSubjects + bonusUt + certBonusThpt;
