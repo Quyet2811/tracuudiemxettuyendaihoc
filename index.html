@@ -3,379 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Tính Điểm & Xét Tuyển Đại Học Toàn Diện</title>
+    <title>Hệ Thống Phân Tích Điểm Xét Tuyển Đại Học</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #4f46e5;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
-            --background: #f1f5f9;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-            line-height: 1.5;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, #1e3a8a, #0d9488);
-            color: white;
-            padding: 30px 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.2);
-        }
-
-        header h1 { margin: 0 0 10px 0; font-size: 26px; }
-        header p { margin: 0; opacity: 0.9; font-size: 15px; }
-
-        .card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            margin-bottom: 25px;
-        }
-
-        h2 {
-            margin-top: 0;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 12px;
-            color: #1e293b;
-            font-size: 19px;
-        }
-
-        .score-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 16px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            font-weight: 600;
-            margin-bottom: 6px;
-            font-size: 14px;
-            color: #475569;
-        }
-
-        input[type="number"], select {
-            padding: 10px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.2s;
-            background-color: #fff;
-        }
-
-        input[type="number"]:focus, select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 640px) {
-            .grid-2 { grid-template-columns: 1fr; }
-            body { padding: 10px; }
-        }
-
-        button {
-            width: 100%;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
-        }
-
-        button:hover { background-color: #4338ca; }
-        button:active { transform: scale(0.99); }
-
-        .comb-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 15px;
-            background: #f8fafc;
-            padding: 12px;
-            border-radius: 8px;
-        }
-
-        .comb-badge {
-            background: #e2e8f0;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .result-item {
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s;
-        }
-
-        .result-item:hover { transform: translateY(-2px); }
-
-        .status-pass { background-color: #f0fdf4; border-left: 6px solid var(--success-color); }
-        .status-warn { background-color: #fffbeb; border-left: 6px solid var(--warning-color); }
-        .status-fail { background-color: #fef2f2; border-left: 6px solid var(--danger-color); }
-
-        .badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 12px;
-            color: white;
-            text-align: center;
-            display: inline-block;
-            white-space: nowrap;
-        }
-
-        .badge-pass { background-color: var(--success-color); }
-        .badge-warn { background-color: var(--warning-color); }
-        .badge-fail { background-color: var(--danger-color); }
-
-        .note-text { color: #b45309; font-weight: 600; margin-top: 6px; display: block; font-size: 13px; }
-        .hidden { display: none; }
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .card { border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-radius: 10px; }
+        .table-container { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .badge { font-size: 0.85rem; padding: 6px 10px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>Hệ Thống Xét Tuyển Đại Học Tự Động (TMU - HUS - UEB)</h1>
-        <p>Phiên bản cấu trúc dữ liệu tách biệt - Sẵn sàng mở rộng không giới hạn</p>
-    </header>
+<div class="container my-5">
+    <h1 class="text-center mb-2 fw-bold text-primary">📊 HỆ THỐNG PHÂN TÍCH ĐIỂM XÈT TUYỂN ĐẠI HỌC</h1>
+    <p class="text-center text-muted mb-5">Kiến trúc module tách biệt - Tự động hóa bộ lõi phân tích</p>
 
-    <div class="card">
-        <h2>1. Nhập điểm thi các môn của bạn</h2>
-        <div class="score-grid">
-            <div class="form-group"><label>Toán</label><input type="number" id="m-toan" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Ngữ văn</label><input type="number" id="m-van" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Vật lí</label><input type="number" id="m-ly" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Hóa học</label><input type="number" id="m-hoa" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Sinh học</label><input type="number" id="m-sinh" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Lịch sử</label><input type="number" id="m-su" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Địa lí</label><input type="number" id="m-dia" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Tin học</label><input type="number" id="m-tin" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>GDKT và Pháp luật</label><input type="number" id="m-gdktdpl" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Công nghệ công nghiệp</label><input type="number" id="m-cncn" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Công nghệ nông nghiệp</label><input type="number" id="m-cnnn" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Tiếng Anh</label><input type="number" id="m-anh" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Tiếng Nga</label><input type="number" id="m-nga" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Tiếng Pháp</label><input type="number" id="m-phap" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Tiếng Trung</label><input type="number" id="m-trung" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Tiếng Đức</label><input type="number" id="m-duc" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Tiếng Nhật</label><input type="number" id="m-nhat" min="0" max="10" step="0.01" placeholder="0.0"></div>
-            <div class="form-group"><label>Tiếng Hàn</label><input type="number" id="m-han" min="0" max="10" step="0.01" placeholder="0.0"></div>
-        </div>
-    </div>
-
-    <div class="card">
-        <h2>2. Chọn Ngành Tuyển Sinh</h2>
-        <div class="grid-2">
-            <div class="form-group">
-                <label>Nhóm ngành lớn của Trường</label>
-                <select id="main-industry" onchange="updateSubIndustries()">
-                    <option value="">-- Chọn nhóm ngành --</option>
-                </select>
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="card p-4 mb-4">
+                <h4 class="mb-3 fw-bold text-secondary">1. Cấu Hình Xét Tuyển</h4>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Trường Đại học mục tiêu</label>
+                    <select id="school-select" class="form-select form-select-lg border-primary">
+                        <option value="">-- Chờ tải dữ liệu --</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Chứng chỉ ngoại ngữ (Nếu có)</label>
+                    <select id="cert-type" class="form-select">
+                        <option value="">-- Không có / Không dùng --</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Chuyên ngành chi tiết</label>
-                <select id="sub-industry">
-                    <option value="">-- Vui lòng chọn ngành lớn trước --</option>
-                </select>
+
+            <div class="card p-4">
+                <h4 class="mb-3 fw-bold text-secondary">2. Số Liệu Điểm Thi</h4>
+                
+                <h6 class="text-primary fw-bold border-bottom pb-1">Điểm Thi THPT Quốc Gia</h6>
+                <div class="row g-2 mb-3">
+                    <div class="col-6"><label class="form-label small">Toán</label><input type="number" step="0.01" id="m-toan" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Ngữ Văn</label><input type="number" step="0.01" id="m-van" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Vật Lý</label><input type="number" step="0.01" id="m-ly" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Hóa Học</label><input type="number" step="0.01" id="m-hoa" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Sinh Học</label><input type="number" step="0.01" id="m-sinh" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Lịch Sử</label><input type="number" step="0.01" id="m-lich-su" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Địa Lý</label><input type="number" step="0.01" id="m-dia" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">GD KT & PL</label><input type="number" step="0.01" id="m-gdktdpl" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Tin Học</label><input type="number" step="0.01" id="m-tin" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Tiếng Anh</label><input type="number" step="0.01" id="m-anh" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Tiếng Pháp</label><input type="number" step="0.01" id="m-phap" class="form-control form-control-sm" placeholder="0.0"></div>
+                    <div class="col-6"><label class="form-label small">Tiếng Trung</label><input type="number" step="0.01" id="m-trung" class="form-control form-control-sm" placeholder="0.0"></div>
+                </div>
+
+                <h6 class="text-success fw-bold border-bottom pb-1">Điểm ĐGNL & Điểm Cộng</h6>
+                <div class="row g-2 mb-4">
+                    <div class="col-6"><label class="form-label small">Điểm HSA ĐHQGHN</label><input type="number" step="0.5" id="score-hsa" class="form-control form-control-sm" placeholder="Mẫu: 90.5"></div>
+                    <div class="col-6"><label class="form-label small">Ưu tiên Đối tượng/KV</label><input type="number" step="0.05" id="bonus-ut" class="form-control form-control-sm" placeholder="Mẫu: 0.25"></div>
+                </div>
+
+                <button onclick="runCoreAnalysisEngine()" class="btn btn-primary btn-lg w-100 fw-bold shadow-sm">🚀 KHỞI CHẠY PHÂN TÍCH</button>
             </div>
         </div>
-    </div>
 
-    <button onclick="calculateAndSuggest()">PHÂN TÍCH KẾT QUẢ XÉT TUYỂN</button>
-
-    <div class="card hidden" id="result-card">
-        <h2>3. Kết Quả Tổ Hợp Khả Dụng & Tỷ Lệ Đỗ</h2>
-        <div id="detected-combinations-box">
-            <span style="font-weight: 600; font-size: 14px; color:#475569;">Các tổ hợp tính được điểm từ điểm bạn nhập:</span>
-            <div class="comb-badges" id="comb-badges-container"></div>
+        <div class="col-lg-8">
+            <div class="table-container">
+                <h4 class="fw-bold mb-3 text-dark">📋 Kết Quả Đánh Giá Tự Động Định Hướng Ngành</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 10%">Mã Ngành</th>
+                                <th style="width: 32%">Tên Ngành Học</th>
+                                <th style="width: 13%">Khối Tối Ưu</th>
+                                <th style="width: 18%">Điểm Xét / Chuẩn (THPT)</th>
+                                <th style="width: 12%">KQ THPT</th>
+                                <th style="width: 15%">Điểm Xét / Chuẩn (HSA)</th>
+                                <th style="width: 10%">KQ HSA</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-tbody">
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-5">Hệ thống đang chờ bạn nạp dữ liệu trường học và nhập điểm số thi.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <hr style="border:0; border-top: 1px solid #e2e8f0; margin: 20px 0;">
-        <div id="results-container"></div>
     </div>
 </div>
 
 <script src="database.js"></script>
 
+<script src="db/tmu.js"></script>
+<script src="db/hus.js"></script>
+
 <script>
-    // Hàm tự động chạy sau khi tải trang để đổ dữ liệu từ database.js vào Select Box
-    window.addEventListener('DOMContentLoaded', () => {
-        if (typeof DATA_DATABASE === 'undefined') {
-            alert("Lỗi: Không tìm thấy file dữ liệu database.js! Hãy chắc chắn rằng file database.js nằm chung thư mục với file index.html");
-            return;
+// Tự động quét kho dữ liệu toàn cục để đổ danh sách trường lên giao diện select
+window.addEventListener("DOMContentLoaded", () => {
+    const schoolSelect = document.getElementById("school-select");
+    if (schoolSelect) {
+        schoolSelect.innerHTML = '<option value="">-- Chọn trường Đại học --</option>';
+        for (let schoolKey in UNIVERSITY_DATABASE) {
+            let option = document.createElement("option");
+            option.value = schoolKey;
+            option.textContent = UNIVERSITY_DATABASE[schoolKey].name;
+            schoolSelect.appendChild(option);
         }
-        const mainSelect = document.getElementById('main-industry');
-        for (let key in DATA_DATABASE) {
-            let option = document.createElement('option');
-            option.value = key;
-            option.innerText = DATA_DATABASE[key].name;
-            mainSelect.appendChild(option);
-        }
-    });
+        schoolSelect.addEventListener("change", onSchoolChange);
+    }
+});
 
-    function updateSubIndustries() {
-        const mainKey = document.getElementById('main-industry').value;
-        const subSelect = document.getElementById('sub-industry');
-        subSelect.innerHTML = '<option value="">-- Chọn chuyên ngành --</option>';
-        if (!mainKey || !DATA_DATABASE[mainKey]) return;
+// Hàm điều khiển thay đổi trường: Đổi danh sách chứng chỉ ngoại ngữ và check cảnh báo barem
+function onSchoolChange() {
+    const schoolKey = document.getElementById("school-select").value;
+    const certSelect = document.getElementById("cert-type");
+    
+    if (!schoolKey) return;
 
-        const subs = DATA_DATABASE[mainKey].subs;
-        for (let key in subs) {
-            let option = document.createElement('option');
-            option.value = key;
-            option.innerText = `[${key}] ${subs[key].name}`;
-            subSelect.appendChild(option);
+    // Nạp động nhóm chứng chỉ được chấp nhận quy đổi tương ứng với trường đó
+    if (certSelect) {
+        certSelect.innerHTML = '<option value="">-- Không có / Không dùng --</option>';
+        const schoolCerts = UNIVERSITY_CERTIFICATES[schoolKey];
+        if (schoolCerts) {
+            for (let certKey in schoolCerts) {
+                let optGroup = document.createElement("optgroup");
+                optGroup.label = certKey;
+                for (let level in schoolCerts[certKey].levels) {
+                    let option = document.createElement("option");
+                    option.value = `${certKey}|${level}`;
+                    option.textContent = schoolCerts[certKey].levels[level].text || `${certKey} ${level}`;
+                    optGroup.appendChild(option);
+                }
+                certSelect.appendChild(optGroup);
+            }
         }
     }
 
-    function calculateAndSuggest() {
-        let userScores = {};
-        document.querySelectorAll('.score-grid input').forEach(input => {
-            let val = parseFloat(input.value);
-            if (!isNaN(val)) userScores[input.id] = val;
+    // Đưa ra cảnh báo chủ động nếu cấu hình dữ liệu HSA của trường đang ở chế độ chờ cập nhật
+    const schoolData = UNIVERSITY_DATABASE[schoolKey];
+    if (schoolData && schoolData.hsaConfig && schoolData.hsaConfig.status === "updating") {
+        alert(`⚠️ Thông báo: ${schoolData.name} hiện tại chưa ban hành barem tính điểm HSA chính thức. Cột kết quả xét tuyển HSA tạm thời hiển thị trạng thái chờ!`);
+    }
+}
+
+// BỘ LÕI XỬ LÝ VÀ PHÂN TÍCH KẾT QUẢ ĐA BIẾN (CORE ANALYSIS ENGINE)
+function runCoreAnalysisEngine() {
+    const schoolKey = document.getElementById("school-select").value;
+    if (!schoolKey) {
+        alert("Vui lòng chọn một trường Đại học trước khi thực hiện phân tích!");
+        return;
+    }
+
+    const schoolData = UNIVERSITY_DATABASE[schoolKey];
+    const industries = schoolData.industries;
+    const resultsTable = document.getElementById("results-tbody");
+    resultsTable.innerHTML = ""; 
+
+    // Tạo bản sao lưu điểm số cục bộ của thí sinh để phục vụ tính toán
+    const userScores = {
+        "m-toan": parseFloat(document.getElementById("m-toan").value) || 0,
+        "m-van": parseFloat(document.getElementById("m-van").value) || 0,
+        "m-ly": parseFloat(document.getElementById("m-ly").value) || 0,
+        "m-hoa": parseFloat(document.getElementById("m-hoa").value) || 0,
+        "m-sinh": parseFloat(document.getElementById("m-sinh").value) || 0,
+        "m-lich-su": parseFloat(document.getElementById("m-lich-su").value) || 0,
+        "m-dia": parseFloat(document.getElementById("m-dia").value) || 0,
+        "m-gdktdpl": parseFloat(document.getElementById("m-gdktdpl").value) || 0,
+        "m-tin": parseFloat(document.getElementById("m-tin").value) || 0,
+        "m-anh": parseFloat(document.getElementById("m-anh").value) || 0,
+        "m-phap": parseFloat(document.getElementById("m-phap").value) || 0,
+        "m-trung": parseFloat(document.getElementById("m-trung").value) || 0
+    };
+
+    const bonusUt = parseFloat(document.getElementById("bonus-ut").value) || 0; 
+    const rawHsa = parseFloat(document.getElementById("score-hsa").value) || 0;
+
+    // Kích hoạt cơ chế quy đổi điểm chứng chỉ ngoại ngữ tự động theo barem riêng của trường
+    let selectedCert = document.getElementById("cert-type").value;
+    let certBonusThpt = 0;
+    
+    if (selectedCert) {
+        const [certName, certLevel] = selectedCert.split("|");
+        const schoolCertConfig = UNIVERSITY_CERTIFICATES[schoolKey]?.[certName]?.levels?.[certLevel];
+        const certLangSubject = UNIVERSITY_CERTIFICATES[schoolKey]?.[certName]?.lang;
+
+        if (schoolCertConfig && certLangSubject) {
+            // Thực hiện thay thế điểm thi môn ngoại ngữ bằng điểm quy đổi nếu nó tối ưu hơn điểm thô
+            if (schoolCertConfig.score > userScores[certLangSubject]) {
+                userScores[certLangSubject] = schoolCertConfig.score;
+            }
+            // Ghi nhận điểm thưởng khuyến khích cộng ngoài (nếu trường áp dụng)
+            certBonusThpt = schoolCertConfig.bonus || 0;
+        }
+    }
+
+    // Duyệt qua vòng lặp toàn bộ danh mục ngành học của trường
+    for (let code in industries) {
+        let ind = industries[code];
+        let bestThptScore = -1; 
+        let bestComb = "---";
+
+        // Thực hiện quét tất cả các tổ hợp môn được chấp nhận xét tuyển của ngành học đó
+        ind.combs.forEach(combCode => {
+            const subjects = COMBINATIONS_DB[combCode];
+            if (!subjects) return;
+
+            // KIỂM TRA CHẶN: Nếu thí sinh bị điểm 0 (bỏ trống) ở bất kỳ môn nào trong khối -> KHÔNG XÉT khối này
+            if (userScores[subjects[0]] === 0 || userScores[subjects[1]] === 0 || userScores[subjects[2]] === 0) {
+                return; 
+            }
+
+            let totalThreeSubjects = userScores[subjects[0]] + userScores[subjects[1]] + userScores[subjects[2]];
+            
+            // Xử lý bài toán môn thi nhân hệ số đặc thù (Ví dụ: HUS nhân đôi điểm Toán)
+            if (ind.mathWeight === 2 && subjects.includes("m-toan")) {
+                totalThreeSubjects = (userScores["m-toan"] * 2) + userScores[subjects.filter(s => s !== "m-toan")[0]] + userScores[subjects.filter(s => s !== "m-toan")[1]];
+                totalThreeSubjects = (totalThreeSubjects * 3) / 4; // Quy đổi mượt chuẩn về thang điểm 30
+            }
+
+            let finalThpt = totalThreeSubjects + bonusUt + certBonusThpt;
+            if (finalThpt > bestThptScore) {
+                bestThptScore = finalThpt;
+                bestComb = combCode;
+            }
         });
 
-        if (Object.keys(userScores).length === 0) {
-            alert("Vui lòng nhập điểm ít nhất 3 môn học!");
-            return;
-        }
+        // Định vị thiết lập nhãn hiển thị trạng thái cho phương thức xét THPT/Kết hợp
+        let thptStatusHtml = `<span class="badge bg-danger">Trượt</span>`;
+        let displayThptScore = "0.00";
 
-        const mainIndustryKey = document.getElementById('main-industry').value;
-        const subIndustryKey = document.getElementById('sub-industry').value;
-
-        if (!mainIndustryKey || !subIndustryKey) {
-            alert("Vui lòng chọn đầy đủ ngành lớn và chuyên ngành chi tiết!");
-            return;
-        }
-
-        // Tính điểm cho các tổ hợp khả dụng từ COMBINATIONS_DB trong database.js
-        let calculatedCombinations = {};
-        for (let combName in COMBINATIONS_DB) {
-            let requiredSubjects = COMBINATIONS_DB[combName];
-            let hasAll = requiredSubjects.every(subId => userScores[subId] !== undefined);
-            if (hasAll) {
-                let sumScore = requiredSubjects.reduce((total, subId) => total + userScores[subId], 0);
-                calculatedCombinations[combName] = parseFloat(sumScore.toFixed(2));
-            }
-        }
-
-        const badgesContainer = document.getElementById('comb-badges-container');
-        badgesContainer.innerHTML = '';
-        let combKeys = Object.keys(calculatedCombinations);
-        if (combKeys.length === 0) {
-            badgesContainer.innerHTML = '<span style="color:var(--danger-color); font-size:14px;">Bạn chưa nhập đủ môn thuộc bất kỳ tổ hợp xét tuyển nào.</span>';
+        if (bestComb === "---" || bestThptScore === -1) {
+            bestComb = "Không có";
+            displayThptScore = "---";
+            thptStatusHtml = `<span class="badge bg-secondary">Không tuyển khối bạn thi</span>`;
         } else {
-            combKeys.forEach(k => {
-                let badge = document.createElement('span');
-                badge.className = 'comb-badge';
-                badge.innerText = `${k}: ${calculatedCombinations[k]} đ`;
-                badgesContainer.appendChild(badge);
-            });
-        }
-
-        const schoolList = DATA_DATABASE[mainIndustryKey].subs[subIndustryKey].schools;
-        const resultsContainer = document.getElementById('results-container');
-        resultsContainer.innerHTML = ''; 
-        document.getElementById('result-card').classList.remove('hidden');
-
-        let matchCount = 0;
-        let userToan = userScores["m-toan"] || 0;
-
-        schoolList.forEach(school => {
-            if (calculatedCombinations[school.code] !== undefined) {
-                matchCount++;
-                let myScore = calculatedCombinations[school.code];
-                let isScorePassed = myScore >= school.lastYearScore;
-                
-                // Kiểm tra tiêu chí phụ môn Toán
-                let isMathPassed = true;
-                if (school.mathMin !== undefined && userToan < school.mathMin) {
-                    isMathPassed = false;
-                }
-
-                let statusClass = 'status-pass';
-                let badgeClass = 'badge-pass';
-                let badgeText = 'TỶ LỆ ĐỖ CAO (AN TOÀN)';
-                let noteHtml = '';
-
-                if (!isScorePassed) {
-                    statusClass = 'status-fail';
-                    badgeClass = 'badge-fail';
-                    badgeText = 'TỶ LỆ ĐỖ THẤP (NGUY CƠ)';
-                } else if (!isMathPassed) { 
-                    statusClass = 'status-warn';
-                    badgeClass = 'badge-warn';
-                    badgeText = 'ĐIỀU KIỆN PHỤ CHƯA ĐẠT';
-                }
-
-                if (school.mathMin !== undefined) {
-                    noteHtml = `<span class="note-text">⚠️ Tiêu chí phụ ngành này: Điểm Toán phải ≥ ${school.mathMin} (Điểm Toán của bạn: ${userToan})</span>`;
-                }
-
-                let div = document.createElement('div');
-                div.className = `result-item ${statusClass}`;
-                div.innerHTML = `
-                    <div>
-                        <strong style="font-size: 17px; color:#1e293b;">${school.schoolName}</strong><br>
-                        <span style="font-size: 14px; color: #64748b;">Mã tổ hợp xét tuyển: <strong style="color:#0f172a;">${school.code}</strong></span><br>
-                        <span style="font-size: 14px;">Điểm của bạn: <strong style="color:var(--primary-color); font-size:16px;">${myScore}</strong> đ</span> | 
-                        <span style="font-size: 14px; color: #475569;">Điểm chuẩn năm ngoái: <strong>${school.lastYearScore}</strong> đ</span>
-                        ${noteHtml}
-                    </div>
-                    <div>
-                        <span class="badge ${badgeClass}">${badgeText}</span>
-                    </div>
-                `;
-                resultsContainer.appendChild(div);
+            displayThptScore = bestThptScore.toFixed(2);
+            if (bestThptScore >= ind.scores.combined) {
+                thptStatusHtml = `<span class="badge bg-success">Đủ điểm đỗ</span>`;
+            } else {
+                thptStatusHtml = `<span class="badge bg-danger">Thiếu ${(ind.scores.combined - bestThptScore).toFixed(2)}đ</span>`;
             }
-        });
-
-        if (matchCount === 0 && combKeys.length > 0) {
-            resultsContainer.innerHTML = `<div style="padding: 15px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; color: #b45309;">Ngành này không xét tuyển các tổ hợp môn bạn hiện có. Hãy nhập thêm môn hoặc đổi ngành khác nhé!</div>`;
         }
-        document.getElementById('result-card').scrollIntoView({ behavior: 'smooth' });
+
+        // Định vị thiết lập nhãn hiển thị trạng thái cho phương thức xét ĐGNL HSA độc lập
+        let finalHsaText = "---";
+        let hsaStatusHtml = `<span class="badge bg-secondary">Không xét</span>`;
+
+        if (schoolData.hsaConfig && rawHsa > 0) {
+            if (schoolData.hsaConfig.status === "updating") {
+                finalHsaText = "Đang cập nhật";
+                hsaStatusHtml = `<span class="badge bg-warning text-dark">Chờ barem</span>`;
+            } else {
+                // Triệu gọi trực tiếp hàm xử lý tính toán điểm quy đổi đặc thù được đóng gói sẵn trong file của trường đó
+                let calculatedHsa = schoolData.hsaConfig.calculate(rawHsa, bonusUt, certBonusThpt);
+                finalHsaText = calculatedHsa.toFixed(2);
+
+                if (ind.scores.hsa === null) {
+                    hsaStatusHtml = `<span class="badge bg-secondary">Không xét</span>`;
+                } else if (calculatedHsa >= ind.scores.hsa) {
+                    hsaStatusHtml = `<span class="badge bg-success">Đủ điểm đỗ</span>`;
+                } else {
+                    hsaStatusHtml = `<span class="badge bg-danger">Thiếu ${(ind.scores.hsa - calculatedHsa).toFixed(2)}đ</span>`;
+                }
+            }
+        }
+
+        // Thực hiện in động các dòng dữ liệu phân tích ra bảng hiển thị
+        let row = document.createElement("tr");
+        row.innerHTML = `
+            <td><strong>${code}</strong></td>
+            <td>${ind.name}</td>
+            <td><span class="text-primary fw-bold">${bestComb}</span></td>
+            <td><span class="text-dark fw-semibold">${displayThptScore}</span> / <small class="text-muted">${ind.scores.combined}</small></td>
+            <td>${thptStatusHtml}</td>
+            <td><span class="text-dark fw-semibold">${finalHsaText}</span> / <small class="text-muted">${ind.scores.hsa || "---"}</small></td>
+            <td>${hsaStatusHtml}</td>
+        `;
+        resultsTable.appendChild(row);
     }
+}
 </script>
 </body>
 </html>
