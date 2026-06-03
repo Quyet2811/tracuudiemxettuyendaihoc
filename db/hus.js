@@ -20,4 +20,6 @@ UNIVERSITY_DATABASE["HUS"] = {
   },
   // 🎯 Công thức tính điểm HSA đặc thù của HUS (Tính trên thang 150 gốc của ĐHQG)
   hsaConfig: {
-    status: "active",
+    status: "updating"
+  },
+    
