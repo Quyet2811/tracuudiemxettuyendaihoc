@@ -5,8 +5,8 @@
 // =========================================================================
 // Đây là các object trống, đóng vai trò làm "bến bãi" để các file dữ liệu riêng 
 // của từng trường (như tmu.js, hus.js...) sau khi nạp vào sẽ tự động đổ dữ liệu về đây.
-const UNIVERSITY_DATABASE = {};
-const UNIVERSITY_CERTIFICATES = {};
+var UNIVERSITY_DATABASE = {};
+var UNIVERSITY_CERTIFICATES = {};
 
 // =========================================================================
 // 2. BẢNG TỔ HỢP MÔN XÉT TUYỂN ĐẠI HỌC TOÀN QUỐC (COMBINATIONS BLUEPRINT)
